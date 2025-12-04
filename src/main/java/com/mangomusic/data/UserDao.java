@@ -18,26 +18,25 @@ public class UserDao {
         this.dataManager = dataManager;
     }
 
-    public List<User> searchUsers(String username) {
+    public List<User> searchUsers(String username,String email) {
         List<User> users = new ArrayList<>();
         String query = "SELECT user_id, username, email, signup_date, subscription_type, country " +
                 "FROM users " +
                 "WHERE username LIKE ? OR email LIKE ? " +
                 "ORDER BY username";
-
         try {
             Connection connection = dataManager.getConnection();
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
 
                 statement.setString(1, "%" + username + "%");
-                statement.setString(1, "%" + username + "%");
+                statement.setString(2, "%" + email + "%");
 
                 try (ResultSet results = statement.executeQuery()) {
                     while (results.next()) {
                         int userId = results.getInt("user_id");
                         String user = results.getString("username");
-                        String email = results.getString("email");
+                        email = results.getString("email");
                         LocalDate signupDate = results.getDate("signup_date").toLocalDate();
                         String subscriptionType = results.getString("subscription_type");
                         String country = results.getString("country");

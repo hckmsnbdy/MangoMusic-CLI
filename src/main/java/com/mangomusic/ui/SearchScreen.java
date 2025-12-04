@@ -137,7 +137,7 @@ public class SearchScreen {
 
         String username = InputValidator.getNonEmptyString("\nEnter username to search: ");
 
-        List<User> users = userDao.searchUsers(username);
+        List<User> users = userDao.searchUsers(username,username);
 
         if (users.isEmpty()) {
             ConsoleColors.printWarning("No users found matching: " + username);
