@@ -39,7 +39,7 @@ public class AlbumDao {
                         int artId = results.getInt("artist_id");
                         String title = results.getString("title");
                         int releaseYear = results.getInt("release_year");
-                        String artistName = results.getString("artist");
+                        String artistName = results.getString("artist_name");
 
                         albums.add(new Album(albumId, artId, title, releaseYear, artistName));
                     }
