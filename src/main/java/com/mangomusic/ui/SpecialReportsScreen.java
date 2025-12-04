@@ -20,7 +20,7 @@ public class SpecialReportsScreen {
             InputValidator.clearScreen();
             displayMenu();
 
-            int choice = InputValidator.getIntInRange("Select an option: ", 0, 1);
+            int choice = InputValidator.getIntInRange("Select an option: ", 0, 2);
 
             switch (choice) {
                 case 1:
@@ -28,7 +28,7 @@ public class SpecialReportsScreen {
                     break;
                 case 2:
                     //@TODO - Create report
-//                    showMostPlayedAlbumsByGenre();
+                    showMostPlayedAlbumsByGenre();
                     break;
                 case 3:
                     //@TODO - Create report
@@ -101,4 +101,56 @@ public class SpecialReportsScreen {
 
         InputValidator.pressEnterToContinue();
     }
+    private void showMostPlayedAlbumsByGenre() {
+        InputValidator.clearScreen();
+        System.out.println("Most Played Albums by Genre");
+        System.out.println();
+
+        java.util.List<ReportResult> rows = reportsDao.getMostPlayedAlbumsByGenre();
+
+        if (rows.isEmpty()) {
+            System.out.println("No play data found for any genre.");
+            InputValidator.pressEnterToContinue();
+            return;
+        }
+
+        System.out.printf("%-10s %-30s %-25s %-12s %-5s%n",
+                "Genre", "Album Title", "Artist Name", "Play Count", "Rank");
+        System.out.println("------------------------------------------------------------------------------------");
+
+        for (ReportResult row : rows) {
+            String genre = row.getString("genre");
+            String albumTitle = row.getString("album_title");
+            String artistName = row.getString("artist_name");
+            Integer playCount = row.getInt("play_count");
+            Integer rank = row.getInt("genre_rank");
+
+            int count;
+            if (playCount != null) {
+                count = playCount;
+            } else {
+                count = 0;
+            }
+
+            int r;
+            if (rank != null) {
+                r = rank;
+            } else {
+                r = 0;
+            }
+
+            String playCountFormatted = String.format("%,d", count);
+
+            System.out.printf("%-10s %-30s %-25s %-12s %-5d%n",
+                    genre,
+                    albumTitle,
+                    artistName,
+                    playCountFormatted,
+                    r);
+        }
+
+        System.out.println();
+        InputValidator.pressEnterToContinue();
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.mangomusic.data;
 
 import com.mangomusic.models.ReportResult;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,9 +11,11 @@ import java.util.List;
 public class ReportsDao {
 
     private final DataManager dataManager;
+    private final AlbumDao albumDao;
 
     public ReportsDao(DataManager dataManager) {
         this.dataManager = dataManager;
+        this.albumDao = new AlbumDao(dataManager);
     }
 
     public List<ReportResult> getDailyActiveUsersReport() {
@@ -677,4 +678,8 @@ public class ReportsDao {
             return "Emerging Fan";
         }
     }
+    public java.util.List<ReportResult> getMostPlayedAlbumsByGenre() {
+        return albumDao.getMostPlayedAlbumsByGenre();
+    }
+
 }
